@@ -1,0 +1,11 @@
+server_log.txt
+settings.ini
+announce.exe
+samp-npc.exe
+samp-server.exe
+server_log.txt
+pawno
+gamemodes/*.amx
+filterscripts/*.amx
+scriptfiles/database.cfg
+mysql_log.txt
