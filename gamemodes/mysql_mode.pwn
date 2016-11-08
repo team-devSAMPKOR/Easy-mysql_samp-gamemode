@@ -93,7 +93,7 @@ stock join(playerid, type){
 public check(playerid){
     new query[128], result;
     GetPlayerName(playerid, USER[playerid][NAME], MAX_PLAYER_NAME);
-    mysql_format(mysql, query, sizeof(query), "SELECT ID, PASS FROM `userlog_info` WHERE `NAME` = '%s' LIMIT 1", USER[playerid][NAME]);
+    mysql_format(mysql, query, sizeof(query), "SELECT ID, PASS FROM `userlog_info` WHERE `NAME` = '%s' LIMIT 1", escape(USER[playerid][NAME]));
     mysql_query(mysql, query);
 
     result = cache_num_rows();
@@ -110,7 +110,7 @@ public regist(playerid, pass[]){
     new query[256];
     GetPlayerName(playerid, USER[playerid][NAME], MAX_PLAYER_NAME);
     mysql_format(mysql, query, sizeof(query), "INSERT INTO `userlog_info` (`NAME`,`PASS`,`MONEY`,`SKIN`) VALUES ('%s','%s',%d,%d)",
-    USER[playerid][NAME], USER[playerid][PASS], USER[playerid][MONEY] = 1000, USER[playerid][SKIN] = 129);
+    escape(USER[playerid][NAME]), escape(USER[playerid][PASS]), USER[playerid][MONEY] = 1000, USER[playerid][SKIN] = 129);
 
     mysql_query(mysql, query);
     USER[playerid][ID] = cache_insert_id();
@@ -136,6 +136,12 @@ public load(playerid){
     spawn(playerid);
 }
 
+stock escape(str[]){
+    new result[256];
+    mysql_real_escape_string(str, result);
+    return result;
+}
+    
 /* INGAME FUNCTION @ spawn(playerid) */
 stock spawn(playerid){
     SetSpawnInfo(playerid, 0, USER[playerid][SKIN], 0.0, 0.0, 0.0, 180, 0, 0, 0, 0, 0, 0);
