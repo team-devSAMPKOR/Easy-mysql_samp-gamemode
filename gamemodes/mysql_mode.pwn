@@ -5,7 +5,6 @@
  
 #define DL_LOGIN    100
 #define DL_REGIST   101
- 
 main(){}
  
 forward check(playerid);
@@ -27,7 +26,6 @@ enum INGAME_MODEL{
     bool:LOGIN
 }
 new INGAME[MAX_PLAYERS][INGAME_MODEL];
- 
 static mysql;
  
 public OnGameModeExit(){return 1;}
@@ -100,7 +98,7 @@ public check(playerid){
  
     result = cache_num_rows();
     if(result){
-        USER[playerid][ID]     = cache_get_field_content_int(0, "ID");
+        USER[playerid][ID]      = cache_get_field_content_int(0, "ID");
         cache_get_field_content(0, "PASS", USER[playerid][PASS], mysql, 24);
     }
     return result;
@@ -110,7 +108,6 @@ public regist(playerid, pass[]){
     format(USER[playerid][PASS],24, "%s",pass);
  
     new query[256];
-    GetPlayerName(playerid, USER[playerid][NAME], MAX_PLAYER_NAME);
     mysql_format(mysql, query, sizeof(query), "INSERT INTO `userlog_info` (`NAME`,`PASS`,`MONEY`,`SKIN`) VALUES ('%s','%s',%d,%d)",
     escape(USER[playerid][NAME]), escape(USER[playerid][PASS]), USER[playerid][MONEY] = 1000, USER[playerid][SKIN] = 129);
  
@@ -135,6 +132,7 @@ public load(playerid){
  
     USER[playerid][MONEY]   = cache_get_field_content_int(0, "MONEY");
     USER[playerid][SKIN]    = cache_get_field_content_int(0, "SKIN");
+ 
     spawn(playerid);
 }
 stock escape(str[]){
@@ -142,7 +140,6 @@ stock escape(str[]){
     mysql_real_escape_string(str, result);
     return result;
 }
- 
 /* INGAME FUNCTION @ spawn(playerid) */
 stock spawn(playerid){
  
